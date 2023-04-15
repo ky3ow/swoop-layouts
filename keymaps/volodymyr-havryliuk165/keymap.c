@@ -108,17 +108,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-----+------+------+------+------|     |------+------+------+------+------|
  * |  _  |   (  |   {  |   [  |   <  |     |   >  |   ]  |   }  |   )  |   =  |
  * |-----+------+------+------+------|     ,------+------+------+------+------|
- * |  \  |   |  |   "  |   ~  |   :  |     |   ;  |   `  |   '  |   ?  |   /  |
+ * |  ,  |   |  |   "  |   ~  |   :  |     |   ;  |   `  |   '  |   ?  |   .  |
  * `------------+------+------+------|     |------+------+------+-------------'
- *              |      |      |      |     | Num  |   .  |   ,  |
+ *              |      |      |      |     | Num  |   \  |   /  |
+ *              `--------------------'     `--------------------'
+ * ,---------------------------------.     ,----------------------------------.
+ * |  !  |   @  |   #  |   $  |   %  |     |   ^  |   &  |   *  |   _  |   +  |
+ * |-----+------+------+------+------|     |------+------+------+------+------|
+ * |  [  |   ,  |   -  |   =  |   <  |     |   >  |   :  |   ;  |   .  |   ]  |
+ * |-----+------+------+------+------|     ,------+------+------+------+------|
+ * |  "  |   ~  |   (  |   {  |   |  |     |   ?  |   }  |   )  |   `  |   '  |
+ * `------------+------+------+------|     |------+------+------+-------------'
+ *              |      |      |      |     | Num  |   \  |   /  |
  *              `--------------------'     `--------------------'
  */
 
 [_SYMBOL] = LAYOUT_split_3x5_3(
-  KC_EXLM,      KC_AT,       KC_HASH,      KC_DLR,    KC_PERC,        KC_CIRC,   KC_AMPR,   KC_ASTR,      KC_MINS,     KC_PLUS,
-  HCT(KC_UNDS), HA(KC_LPRN), HCM(KC_LCBR), KC_LBRC,   KC_LT,          KC_GT,     KC_RBRC,   HCM(KC_RCBR), HA(KC_RPRN), HCT(KC_EQL),
-  KC_BSLS,      KC_PIPE,     KC_DQUO,      KC_TILD,   KC_COLN,        KC_SCLN,   KC_GRV,    KC_QUOT,      KC_QUES,     KC_SLSH,
-                             _______,      _______,   _______,        NUM,       KC_DOT,    KC_COMM
+  KC_EXLM,       KC_AT,       KC_HASH,       KC_DLR,  KC_PERC,        KC_CIRC,   KC_AMPR,   KC_ASTR,      KC_UNDS,    KC_PLUS,
+  HCT(KC_LBRC),  HA(KC_COMM), HCM(KC_MINUS), KC_EQL,  KC_LT,          KC_GT,     KC_COLN,   HCM(KC_SCLN), HA(KC_DOT), HCT(KC_RBRC),
+  KC_DQUO,       KC_TILDE,    KC_LPRN,       KC_LCBR, KC_PIPE,        KC_QUES,   KC_RCBR,   KC_RPRN,      KC_GRV,     KC_QUOT,
+                             _______,      _______,   _______,        NUM,       KC_SLSH,   KC_BSLS 
 ),
 
 /*
