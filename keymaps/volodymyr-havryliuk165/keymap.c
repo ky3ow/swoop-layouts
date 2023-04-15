@@ -109,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_SYMBOL] = LAYOUT_split_3x5_3(
-  KC_EXCL,   KC_AT,    KC_HASH,   KC_DLR,    KC_PERC,        KC_CIRC,   KC_AMPR,   KC_ASTR,   KC_MINS,   KC_PLUS,
+  KC_EXLM,   KC_AT,    KC_HASH,   KC_DLR,    KC_PERC,        KC_CIRC,   KC_AMPR,   KC_ASTR,   KC_MINS,   KC_PLUS,
   KC_UNDS,   KC_LPRN,  KC_LCBR,   KC_LBRC,   KC_LT,          KC_GT,     KC_RBRC,   KC_RCBR,   KC_RPRN,   KC_EQL,
   KC_BSLS,   KC_PIPE,  KC_DQUO,   KC_TILD,   KC_COLN,        KC_SCLN,   KC_GRV,    KC_QUOT,   KC_QUES,   KC_SLSH,
                        _______,   _______,   _______,        NUM,       KC_DOT,    KC_COMM
@@ -118,13 +118,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * Navigation
  * ,---------------------------------.     ,----------------------------------.
- * | ESC |   @  |   #  |   $  |   %  |     | PSCR | HOME | PGDN | PGUP | END  |
+ * | ESC |      |      |      |      |     | PSCR | HOME | PGDN | PGUP | END  |
  * |-----+------+------+------+------|     |------+------+------+------+------|
- * | SFT |   (  |   {  |   [  |   <  |     |  ENT |   L  |   D  |   U  |   R  |
+ * | SFT |      |      |      |      |     |  ENT |   L  |   D  |   U  |   R  |
  * |-----+------+------+------+------|     ,------+------+------+------+------|
- * | CTR |   |  |   "  |   ~  |   :  |     |   ;  |   `  |   '  |   ?  |   /  |
+ * | CTR |      |      |      |      |     |      |      |      |      |      |
  * `------------+------+------+------|     |------+------+------+-------------'
- *              | Cmd  | Alt  | Num  |     |      |   .  |   ,  |
+ *              | Cmd  | Alt  | Num  |     |      |      |      |
  *              `--------------------'     `--------------------'
  */
 
