@@ -15,124 +15,117 @@
  */
 #include QMK_KEYBOARD_H
 
-enum layers { QWERTY = 0, SOUL, UN, SYM };
+enum layers { QWERTY = 0, SOUL, UN, UN_EXTRA, NAV, SYM, NUM, LANGUAGE };
 
-enum my_keys { TO_BASE = SAFE_RANGE, TO_QWERTY, TO_SOUL, TO_UN, TO_SYM };
+enum my_keys { MT_PLUS = SAFE_RANGE, MT_RCBR };
+
+#define CTL_PLUS LCTL_T(MT_PLUS)
+#define GUI_RCBR LGUI_T(MT_RCBR)
 
 #define CHANGE_LANG tap_code16(LGUI(LCTL(KC_SPC)))
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-    CHANGE_LANG;
+    static uint8_t prev_layer = QWERTY;
+
+    uint8_t layer         = get_highest_layer(state);
+    bool    should_toggle = false;
+    switch (layer) {
+        case QWERTY ... SOUL:
+            should_toggle = prev_layer >= UN;
+            break;
+        case UN:
+            should_toggle = prev_layer < UN;
+            break;
+    }
+    if (should_toggle) CHANGE_LANG;
+
+    prev_layer = layer;
     return state;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-    static bool in_ukrainian = false;
-
-    if (record->event.pressed) {
-        switch (keycode) {
-            case TO_BASE:
-                if (in_ukrainian) {
-                    CHANGE_LANG;
-                }
-                layer_clear();
-                return false;
-            case TO_QWERTY:
-                in_ukrainian = false;
-                default_layer_set(1U << QWERTY);
-                return false;
-            case TO_SOUL:
-                in_ukrainian = false;
-                default_layer_set(1U << SOUL);
-                return false;
-            case TO_UN:
-                in_ukrainian = true;
-                default_layer_set(1U << UN);
-                return false;
-            case TO_SYM:
-                if (in_ukrainian) {
-                    CHANGE_LANG;
-                }
-                layer_on(SYM);
-                return true;
-            default:
-                return true;
-        }
+layer_state_t layer_state_set_user(layer_state_t state) {
+    static bool sym_on = false;
+    if (sym_on != IS_LAYER_ON_STATE(state, SYM)) {
+      sym_on = !sym_on;
+      if(get_highest_layer(default_layer_state) >= UN) CHANGE_LANG;
     }
+    return state;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch(keycode) {
+    case MT_PLUS:
+      if (record->event.pressed && record->tap.count > 0) {
+        tap_code16(KC_PLUS);
+        return false;
+      }
+      break; 
+    case MT_RCBR:
+      if (record->event.pressed && record->tap.count > 0) {
+        tap_code16(KC_RCBR);
+        return false;
+      }
+      break; 
+  }
   return true;
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    /*
-     * QWERTY
-     * ,---------------------------------.     ,----------------------------------.
-     * |  Q  |   W  |   E  |   R  |   T  |     |   Y  |   U  |   I  |   O  |   P  |
-     * |-----+------+------+------+------|     |------+------+------+------+------|
-     * |  A  |   S  |   D  |   F  |   G  |     |   H  |   J  |   K  |   L  |   ;  |
-     * |-----+------+------+------+------|     ,------+------+------+------+------|
-     * |  Z  |   X  |   C  |   V  |   B  |     |   N  |   M  |   ,  |   .  |   /  |
-     * `------------+------+------+------|     |------+------+------+-------------'
-     *              | LCTL | BSpc | Esc  |     | Ent  | Spc  | LAlt |
-     *              `--------------------'     `--------------------'
-     */
 
     [QWERTY] = LAYOUT_split_3x5_3(
-      KC_Q, KC_W, KC_E, KC_R, KC_T,    KC_Y, KC_U, KC_I, KC_O, KC_P,
-      KC_A, KC_S, KC_D, KC_F, KC_G,    KC_H, KC_J, KC_K, KC_L, KC_SCLN, 
-      KC_Z, KC_X, KC_C, KC_V, KC_B,    KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH,
-       KC_LCTL, KC_BSPC, TO_SOUL,     TO_UN, TO_SYM, KC_LALT),
+      KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P,
+      LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), KC_F, KC_G, KC_H, KC_J, LGUI_T(KC_K), LALT_T(KC_L), LCTL_T(KC_SCLN),
+      KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH,
+      XXXXXXX, KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+    ),
 
-    /*
-     * SOUL
-     * ,---------------------------------.     ,----------------------------------.
-     * |  Q  |   W  |   E  |   R  |   T  |     |   Y  |   U  |   I  |   O  |   P  |
-     * |-----+------+------+------+------|     |------+------+------+------+------|
-     * |  A  |   S  |   D  |   F  |   G  |     |   H  |   J  |   K  |   L  |   ;  |
-     * |-----+------+------+------+------|     ,------+------+------+------+------|
-     * |  Z  |   X  |   C  |   V  |   B  |     |   N  |   M  |   ,  |   .  |   /  |
-     * `------------+------+------+------|     |------+------+------+-------------'
-     *              | LCTL | BSpc | Esc  |     | Ent  | Spc  | LAlt |
-     *              `--------------------'     `--------------------'
-     */
     [SOUL] = LAYOUT_split_3x5_3(
-      KC_Q, KC_W, KC_L, KC_D, KC_P,   KC_K, KC_M, KC_U, KC_Y, KC_SCLN,
-      KC_A, KC_S, KC_R, KC_T, KC_G,   KC_F, KC_N, KC_E, KC_I, KC_O,
-      KC_Z, KC_X, KC_C, KC_V, KC_J,   KC_B, KC_H, KC_COMM, KC_DOT, KC_SLSH,
-       KC_LCTL, KC_BSPC, TO_SOUL,     TO_UN, TO_SYM, KC_LALT),
+      KC_Q, KC_W, KC_L, KC_D, KC_P, KC_K, KC_M, KC_U, KC_Y, KC_SCLN,
+      LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_R), KC_T, KC_G, KC_F, KC_N, LGUI_T(KC_E), LALT_T(KC_I), LCTL_T(KC_O),
+      KC_ESC, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_H, KC_COMM, KC_DOT, KC_SLSH,
+      KC_J, KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+    ),
 
-    /*
-     * ЙЦУКЕН
-     * ,---------------------------------.     ,----------------------------------.
-     * |  Q  |   W  |   E  |   R  |   T  |     |   Y  |   U  |   I  |   O  |   P  |
-     * |-----+------+------+------+------|     |------+------+------+------+------|
-     * |  A  |   S  |   D  |   F  |   G  |     |   H  |   J  |   K  |   L  |   ;  |
-     * |-----+------+------+------+------|     ,------+------+------+------+------|
-     * |  Z  |   X  |   C  |   V  |   B  |     |   N  |   M  |   ,  |   .  |   /  |
-     * `------------+------+------+------|     |------+------+------+-------------'
-     *              | LCTL | BSpc | Esc  |     | Ent  | Spc  | LAlt |
-     *              `--------------------'     `--------------------'
-     */
     [UN] = LAYOUT_split_3x5_3(
-     KC_Q, KC_W, KC_E, KC_R, KC_T,    KC_Y, KC_U, KC_I, KC_P, KC_LBRC,
-     KC_A, KC_S, KC_D, KC_F, KC_G,    KC_H, KC_J, KC_K, KC_L, KC_SCLN,
-     KC_Z, KC_X, KC_C, KC_V, KC_B,    KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, 
-     KC_LCTL, KC_BSPC, TO_SOUL,     TO_UN, TO_SYM, KC_LALT),
+      KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_P, KC_LBRC,
+      LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), KC_F, KC_G, KC_H, KC_J, LGUI_T(KC_K), LALT_T(KC_L), LCTL_T(KC_SCLN),
+      KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH,
+      OSL(UN_EXTRA), KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+    ),
 
-    /*
-     * ЙЦУКЕН
-     * ,---------------------------------.     ,----------------------------------.
-     * |  Q  |   W  |   E  |   R  |   T  |     |   Y  |   U  |   I  |   O  |   P  |
-     * |-----+------+------+------+------|     |------+------+------+------+------|
-     * |  A  |   S  |   D  |   F  |   G  |     |   H  |   J  |   K  |   L  |   ;  |
-     * |-----+------+------+------+------|     ,------+------+------+------+------|
-     * |  Z  |   X  |   C  |   V  |   B  |     |   N  |   M  |   ,  |   .  |   /  |
-     * `------------+------+------+------|     |------+------+------+-------------'
-     *              | LCTL | BSpc | Esc  |     | Ent  | Spc  | LAlt |
-     *              `--------------------'     `--------------------'
-     */
+    [UN_EXTRA] = LAYOUT_split_3x5_3(
+      _______, _______, _______, _______, KC_QUOT, _______, RSFT(KC_U), KC_O, _______, _______,
+      _______, KC_RBRC, _______, _______, _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+      OSL(UN_EXTRA), KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+    ),
+
+    [NAV] = LAYOUT_split_3x5_3(
+      _______, _______, _______, _______, KC_PSCR, KC_ESC, KC_BSPC, KC_TAB, KC_INS, KC_DEL,
+      KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, _______, KC_ENT, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT,
+      _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,
+      XXXXXXX, _______, TO(0), TG(SYM), TG(NUM), XXXXXXX
+    ),
+
     [SYM] = LAYOUT_split_3x5_3(
-      KC_Q, KC_W, KC_E,     KC_R,    KC_T,        KC_Y,    KC_U,   KC_I,    KC_P, KC_LBRC,
-      KC_A, KC_S, KC_D,     KC_LCBR,    KC_G,        KC_H,    KC_RCBR,   KC_K,    KC_L, KC_SCLN, 
-      KC_Z, KC_X, KC_C,     KC_V,    KC_B,        KC_N,    KC_M,   KC_COMM, KC_DOT, KC_SLSH,
-                  KC_LCTL,  KC_BSPC, TO_SOUL,     TO_UN,   TO_SYM, KC_LALT
-    )};
+      KC_TILD, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_LPRN, KC_RPRN, KC_UNDS, KC_GRV,
+      MT_PLUS, LALT_T(KC_MINUS), LGUI_T(KC_EQL), KC_ASTR, KC_COLN, KC_SCLN, KC_LCBR, MT_RCBR, LALT_T(KC_LBRC), LCTL_T(KC_RBRC),
+      KC_LT, KC_EXLM, KC_PIPE, KC_GT, KC_AMPR, KC_DQUO, KC_QUOT, KC_COMM, KC_DOT, KC_QUES,
+      KC_BSLS, _______, TO(0), TG(SYM), _______, KC_SLSH
+    ),
+
+    [NUM] = LAYOUT_split_3x5_3(
+      KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0,
+      KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, KC_F6, KC_F12, KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL,
+      KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F11, KC_F10, KC_F9, KC_F8, KC_F7,
+      XXXXXXX, _______, TO(0), TG(NUM), _______, XXXXXXX
+    ),
+
+    [LANGUAGE] = LAYOUT_split_3x5_3(
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, DF(QWERTY), DF(SOUL), DF(UN), _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+      XXXXXXX, KC_SPC, TO(0),  TG(NAV), KC_LSFT, XXXXXXX
+    )
+
+};
