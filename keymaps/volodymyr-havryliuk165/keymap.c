@@ -15,12 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 
-enum layers { QWERTY = 0, SOUL, UN, UN_EXTRA, NAV, SYM, NUM, LANGUAGE };
-
-enum my_keys { MT_PLUS = SAFE_RANGE, MT_RCBR };
-
-#define CTL_PLUS LCTL_T(MT_PLUS)
-#define GUI_RCBR LGUI_T(MT_RCBR)
+enum layers { QWERTY = 0, SOUL, UN, UN_EXTRA, NAV, SYM, SYS };
 
 #define CHANGE_LANG tap_code16(LGUI(LCTL(KC_SPC)))
 
@@ -52,80 +47,55 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch(keycode) {
-    case MT_PLUS:
-      if (record->event.pressed && record->tap.count > 0) {
-        tap_code16(KC_PLUS);
-        return false;
-      }
-      break; 
-    case MT_RCBR:
-      if (record->event.pressed && record->tap.count > 0) {
-        tap_code16(KC_RCBR);
-        return false;
-      }
-      break; 
-  }
-  return true;
-}
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [QWERTY] = LAYOUT_split_3x5_3(
       KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P,
-      LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), KC_F, KC_G, KC_H, KC_J, LGUI_T(KC_K), LALT_T(KC_L), LCTL_T(KC_SCLN),
+      KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN,
       KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH,
-      XXXXXXX, KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+      XXXXXXX, LT(SYS, KC_ESC), LT(NAV, KC_SPC), LT(SYM, KC_BSPC), KC_ENT, XXXXXXX
     ),
 
     [SOUL] = LAYOUT_split_3x5_3(
       KC_Q, KC_W, KC_L, KC_D, KC_P, KC_K, KC_M, KC_U, KC_Y, KC_SCLN,
-      LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_R), KC_T, KC_G, KC_F, KC_N, LGUI_T(KC_E), LALT_T(KC_I), LCTL_T(KC_O),
-      KC_ESC, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_H, KC_COMM, KC_DOT, KC_SLSH,
-      KC_J, KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+      KC_A, KC_S, KC_R, KC_T, KC_G, KC_F, KC_N, KC_E, KC_I, KC_O,
+      XXXXXXX, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_H, KC_COMM, KC_DOT, KC_SLSH,
+      KC_J, LT(SYS, KC_ESC), LT(NAV, KC_SPC), LT(SYM, KC_BSPC), KC_ENT, XXXXXXX
     ),
 
     [UN] = LAYOUT_split_3x5_3(
       KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_P, KC_LBRC,
-      LCTL_T(KC_A), LALT_T(KC_S), LGUI_T(KC_D), KC_F, KC_G, KC_H, KC_J, LGUI_T(KC_K), LALT_T(KC_L), LCTL_T(KC_SCLN),
+      KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN,
       KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH,
-      OSL(UN_EXTRA), KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+      OSL(UN_EXTRA), LT(SYS, KC_ESC), LT(NAV, KC_SPC), LT(SYM, KC_BSPC), KC_ENT, XXXXXXX
     ),
 
     [UN_EXTRA] = LAYOUT_split_3x5_3(
-      _______, _______, _______, _______, KC_QUOT, _______, RSFT(KC_U), KC_O, _______, _______,
+      _______, _______, _______, _______, KC_QUOT, _______, RALT(KC_U), KC_O, _______, _______,
       _______, KC_RBRC, _______, _______, _______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-      OSL(UN_EXTRA), KC_SPC, XXXXXXX, TG(NAV), KC_LSFT, OSL(LANGUAGE)
+      _______, _______, _______, _______, _______, _______ 
     ),
 
     [NAV] = LAYOUT_split_3x5_3(
-      _______, _______, _______, _______, KC_PSCR, KC_ESC, KC_BSPC, KC_TAB, KC_INS, KC_DEL,
-      KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, _______, KC_ENT, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT,
-      _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,
-      XXXXXXX, _______, TO(0), TG(SYM), TG(NUM), XXXXXXX
+      KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0,
+      OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LGUI), OSM(MOD_LSFT), KC_TAB, KC_ESC, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT,
+      KC_PPLS, KC_PMNS, KC_PEQL, KC_PAST, KC_PSLS, KC_PDOT, KC_HOME, KC_PGDN, KC_PGUP, KC_END,
+      XXXXXXX, XXXXXXX, _______, _______, _______, _______ 
     ),
 
     [SYM] = LAYOUT_split_3x5_3(
-      KC_TILD, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_LPRN, KC_RPRN, KC_UNDS, KC_GRV,
-      MT_PLUS, LALT_T(KC_MINUS), LGUI_T(KC_EQL), KC_ASTR, KC_COLN, KC_SCLN, KC_LCBR, MT_RCBR, LALT_T(KC_LBRC), LCTL_T(KC_RBRC),
-      KC_LT, KC_EXLM, KC_PIPE, KC_GT, KC_AMPR, KC_DQUO, KC_QUOT, KC_COMM, KC_DOT, KC_QUES,
-      KC_BSLS, _______, TO(0), TG(SYM), _______, KC_SLSH
+      KC_TILD, KC_AT, KC_CIRC, KC_DLR, KC_PERC, KC_BSLS, KC_SLSH, KC_RPRN, KC_LPRN, KC_GRV,
+      KC_PLUS, KC_MINUS, KC_EQL, KC_ASTR, KC_COLN, KC_SCLN, KC_LCBR, KC_RCBR, KC_UNDS, KC_HASH,
+      KC_LT, KC_EXLM, KC_PIPE, KC_GT, KC_AMPR, KC_QUES, KC_LBRC, KC_RBRC, KC_COMM, KC_DOT, 
+      XXXXXXX, KC_QUOT, KC_DQUO, _______, XXXXXXX, XXXXXXX 
     ),
 
-    [NUM] = LAYOUT_split_3x5_3(
-      KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0,
-      KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, KC_F6, KC_F12, KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL,
-      KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F11, KC_F10, KC_F9, KC_F8, KC_F7,
-      XXXXXXX, _______, TO(0), TG(NUM), _______, XXXXXXX
-    ),
-
-    [LANGUAGE] = LAYOUT_split_3x5_3(
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, _______, _______, DF(QWERTY), DF(SOUL), DF(UN), _______,
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-      XXXXXXX, KC_SPC, TO(0),  TG(NAV), KC_LSFT, XXXXXXX
+    [SYS] = LAYOUT_split_3x5_3(
+      _______, DF(QWERTY), DF(SOUL), DF(UN), KC_PSCR, KC_DEL, KC_INS, _______, _______, _______,
+      KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10,
+      _______, _______, _______, _______, KC_F11, KC_F12, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______ 
     )
 
 };
