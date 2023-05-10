@@ -15,7 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 
-enum layers { QWERTY = 0, SOUL, UN, UN_EXTRA, NAV, SYM, SYS };
+enum layers { QWERTY = 0, SOUL, UN, UN_EXTRA, NAV, SYM, NAV_EXTR, SYM_EXTR };
 
 #define CHANGE_LANG tap_code16(LGUI(LCTL(KC_SPC)))
 
@@ -80,22 +80,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [NAV] = LAYOUT_split_3x5_3(
       KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0,
       OSM(MOD_LCTL), OSM(MOD_LALT), OSM(MOD_LGUI), OSM(MOD_LSFT), KC_TAB, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_ESC, 
-      KC_PPLS, KC_PMNS, KC_PEQL, KC_PAST, KC_PSLS, KC_PDOT, KC_HOME, KC_PGDN, KC_PGUP, KC_END,
-      XXXXXXX, _______, _______, KC_ENT, MO(SYS), _______ 
+      KC_PPLS, KC_PMNS, KC_PEQL, KC_PAST, KC_PSLS, KC_PDOT, OSM(MOD_LCTL | MOD_LSFT), _______, _______, _______,
+      XXXXXXX, _______, _______, KC_ENT, MO(NAV_EXTR), _______ 
     ),
 
     [SYM] = LAYOUT_split_3x5_3(
-      KC_TILD, KC_AT, KC_CIRC, KC_DLR, KC_PERC,       KC_SCLN, KC_HASH, KC_RCBR, KC_RPRN, KC_RBRC, 
-      KC_PLUS, KC_MINUS, KC_EQL, KC_ASTR, KC_COLN,    KC_QUOT, KC_LCBR, KC_LPRN, KC_LBRC, KC_DQUO,
-      KC_LT, KC_EXLM, KC_PIPE, KC_GT, KC_AMPR,        KC_GRV, KC_SLSH, KC_BSLS, KC_DOT, KC_QUES,
-      XXXXXXX, MO(SYS), KC_UNDS, _______, _______, XXXXXXX 
+      KC_GRV, KC_SLSH, KC_BSLS, _______, _______,       _______, KC_HASH, KC_RCBR, KC_RPRN, KC_RBRC, 
+      KC_QUOT, KC_DQUO, KC_QUES, KC_DOT, KC_COLN,       _______, KC_LCBR, KC_LPRN, KC_LBRC, KC_SCLN,
+      _______, _______, _______, KC_COMMA,  _______,       _______, _______, _______, _______, _______,
+      XXXXXXX, MO(SYM_EXTR), KC_UNDS, _______, _______, XXXXXXX 
     ),
 
-    [SYS] = LAYOUT_split_3x5_3(
+    [NAV_EXTR] = LAYOUT_split_3x5_3(
       _______, DF(QWERTY), DF(SOUL), DF(UN), KC_PSCR, KC_DEL, KC_INS, _______, _______, _______,
-      KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10,
-      _______, _______, _______, _______, KC_F11, KC_F12, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, _______, _______ 
+    ), 
+
+    [SYM_EXTR] = LAYOUT_split_3x5_3(
+      KC_TILD, KC_AT, KC_CIRC, KC_DLR, KC_PERC,       _______, KC_F9, KC_F10, KC_F11, KC_F12, 
+      KC_PLUS, KC_MINUS, KC_EQL, KC_ASTR, KC_COLN,    _______, KC_F5, KC_F6, KC_F7, KC_F8,
+      KC_LT, KC_EXLM, KC_PIPE, KC_GT, KC_AMPR,        _______, KC_F1, KC_F2, KC_F3, KC_F4,
+      XXXXXXX, _______, _______, _______, _______, XXXXXXX 
     )
 
 };
