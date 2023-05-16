@@ -26,21 +26,30 @@ enum custom_keycodes {
 
 // Combos start //
 enum combos {
-  COMBO_CTL,
+  COMBO_J,
+  COMBO_V,
+  COMBO_B,
+  COMBO_UNDS,
   COMBO_LENGTH
 };
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
-const uint16_t PROGMEM sp_bsp[] = {KC_SPC, KC_BSPC, COMBO_END};
+const uint16_t PROGMEM combj[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM combv[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM combb[] = {KC_H, KC_DOT, COMBO_END};
+const uint16_t PROGMEM combunds[] = {KC_U, KC_Y, COMBO_END};
 combo_t key_combos[] = {
-  [COMBO_CTL] = COMBO(sp_bsp, OSM(MOD_LCTL))
+  [COMBO_J] = COMBO(combj, KC_J),
+  [COMBO_V] = COMBO(combv, KC_V),
+  [COMBO_B] = COMBO(combb, KC_B),
+  [COMBO_UNDS] = COMBO(combunds, KC_UNDS),
 };
 
 uint16_t get_combo_term(uint16_t index, combo_t *combo) {
-    switch (index) {
-        case COMBO_CTL:
-            return 200;
-    }
+    // switch (index) {
+    //     case COMBO_CTL:
+    //         return 200;
+    // }
     return COMBO_TERM;
 }
 
@@ -85,21 +94,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P,
       KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN,
       KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_QUES,
-      XXXXXXX, OSL(_NAVIGATION), KC_SPC, KC_BSPC, OSL(_SYMBOL), XXXXXXX
+      XXXXXXX, OSL(_SYMBOL), KC_SPC, REPEAT, OSL(_NAVIGATION), XXXXXXX
     ),
 
     [_SOUL] = LAYOUT_split_3x5_3(
-      KC_Q, KC_W, KC_L, KC_D, KC_P, KC_K, KC_M, KC_U, KC_Y, KC_J,
+      KC_Q, KC_W, KC_L, KC_D, KC_P, KC_K, KC_M, KC_U, KC_Y, KC_QUOT,
       KC_A, KC_S, KC_R, KC_T, KC_G, KC_F, KC_N, KC_E, KC_I, KC_O,
-      XXXXXXX, KC_Z, KC_X, KC_C, XXXXXXX, XXXXXXX, KC_H, KC_V, KC_B, XXXXXXX,
-      XXXXXXX, OSL(_NAVIGATION), KC_SPC, KC_BSPC, OSL(_SYMBOL), XXXXXXX
+      XXXXXXX, KC_Z, KC_X, KC_C, XXXXXXX, XXXXXXX, KC_H, KC_COMM, KC_DOT, XXXXXXX,
+      XXXXXXX, OSL(_SYMBOL), KC_SPC, REPEAT, OSL(_NAVIGATION), XXXXXXX
     ),
 
     [_UN] = LAYOUT_split_3x5_3(
       KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_P, KC_LBRC,
       KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN,
       KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_QUES,
-      OSL(_UN_EXTRA), OSL(_NAVIGATION), KC_SPC, KC_BSPC, OSL(_SYMBOL), XXXXXXX
+      XXXXXXX, OSL(_SYMBOL), KC_SPC, REPEAT, OSL(_NAVIGATION), XXXXXXX
     ),
 
     [_UN_EXTRA] = LAYOUT_split_3x5_3(
@@ -110,10 +119,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_NAVIGATION] = LAYOUT_split_3x5_3(
-      KC_ENT, ALTREP, KC_UP, REPEAT, XXXXXXX, XXXXXXX, KC_7, KC_8, KC_9, OSM(MOD_LCTL),
-      KC_ESC, KC_LEFT, KC_DOWN, KC_RIGHT, KC_TAB, OSM(MOD_LALT), KC_4, KC_5, KC_6, OSM(MOD_LSFT), 
-      XXXXXXX, KC_PLUS, KC_ASTR, KC_PDOT, KC_EQL, OSM(MOD_LGUI), KC_1, KC_2, KC_3, XXXXXXX,
-      XXXXXXX, _______, OSL(_LANGUAGE), KC_0, MO(_SYSTEM), XXXXXXX
+      _______, KC_TAB, KC_UP, KC_ENT, _______, _______, REPEAT, _______, ALTREP, _______,
+      KC_ESC, KC_LEFT, KC_DOWN, KC_RIGHT, _______, _______, OSM(MOD_LSFT), OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), 
+      XXXXXXX, _______, _______, _______, XXXXXXX, XXXXXXX, _______, _______, _______, XXXXXXX,
+      XXXXXXX, OSL(_SYSTEM), KC_BSPC, OSL(_LANGUAGE), _______, XXXXXXX
     ),
 
     [_SYMBOL] = LAYOUT_split_3x5_3(
