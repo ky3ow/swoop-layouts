@@ -46,13 +46,13 @@ enum custom_keycodes {
 // **************************************************
 
 // Combos
-enum combos { C_J, C_V, C_B, C_UNDS, C_PERC, C_QUES, C_LEN };
+enum combos { C_J, C_V, C_X, C_UNDS, C_PERC, C_QUES, C_BSPC, C_LEN };
 uint16_t COMBO_LEN = C_LEN;
 
-const uint16_t PROGMEM combj[]      = {KC_Z, KC_X, COMBO_END};
-const uint16_t PROGMEM combv[]      = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM combb[]      = {KC_H, KC_DOT, COMBO_END};
-const uint16_t PROGMEM combunds[]   = {KC_U, KC_Y, COMBO_END};
+const uint16_t PROGMEM combj[]      = {KC_B, KC_Z, COMBO_END};
+const uint16_t PROGMEM combv[]      = {KC_Z, KC_C, COMBO_END};
+const uint16_t PROGMEM combx[]      = {KC_H, KC_COMM, COMBO_END};
+const uint16_t PROGMEM combunds[]   = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM combperc[]   = {KC_TILD, KC_CIRC, COMBO_END};
 const uint16_t PROGMEM combques[]   = {KC_EXLM, KC_PIPE, COMBO_END};
 
@@ -60,7 +60,7 @@ combo_t key_combos[] = {
     // Soul combos
     [C_J]    = COMBO(combj, KC_J),
     [C_V]    = COMBO(combv, KC_V),
-    [C_B]    = COMBO(combb, KC_B),
+    [C_X]    = COMBO(combx, KC_X),
     [C_UNDS] = COMBO(combunds, KC_UNDS),
     // Expr layer combos
     [C_PERC] = COMBO(combperc, KC_PERC),
@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_A    ,KC_S    ,KC_R    ,KC_T    ,KC_G    ,                          KC_F    ,KC_N    ,KC_E    ,KC_I    ,KC_O    , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,KC_Z    ,KC_X    ,KC_C    ,XXXXXXX ,                          XXXXXXX ,KC_H    ,KC_COMM ,KC_DOT  ,XXXXXXX , 
+       XXXXXXX ,KC_B    ,KC_Z    ,KC_C    ,XXXXXXX ,                          XXXXXXX ,KC_H    ,KC_COMM ,KC_DOT  ,XXXXXXX , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
                          XXXXXXX ,OS_EXPR ,KC_SPC  ,                          REPEAT  ,OS_NAV  ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
@@ -122,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
        _______ ,KC_TAB  ,KC_UP   ,KC_ENT  ,_______ ,                          _______ ,REPEAT  ,_______ ,ALTREP  ,OS_WEZ  ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_ESC  ,KC_LEFT ,KC_DOWN ,KC_RIGHT,_______ ,                          _______ ,OS_SFT  ,OS_GUI  ,OS_ALT  ,OS_CTL  , 
+       KC_ESC  ,KC_LEFT ,KC_DOWN ,KC_RIGHT,_______ ,                          _______ ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        XXXXXXX ,_______ ,_______ ,_______ ,XXXXXXX ,                          XXXXXXX ,OS_FUNC ,OS_MISC ,_______ ,XXXXXXX , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
@@ -158,7 +158,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
        OS_WEZ  ,KC_LBRC ,KC_RBRC ,_______ ,_______ ,                          KC_PLUS ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_ASTR ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       OS_CTL  ,OS_ALT  ,OS_GUI  ,OS_SFT  ,_______ ,                          KC_AMPR ,KC_COLN ,KC_EQL  ,KC_MINS ,KC_GT   , 
+       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          KC_AMPR ,KC_COLN ,KC_EQL  ,KC_MINS ,KC_GT   , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        XXXXXXX ,_______ ,_______ ,OS_PROG ,XXXXXXX ,                          XXXXXXX ,KC_LT   ,KC_PIPE ,KC_EXLM ,XXXXXXX , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
@@ -182,7 +182,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
        OS_WEZ  ,_______ ,_______ ,_______ ,_______ ,                          _______ ,KC_7    ,KC_8    ,KC_9    ,_______ ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       OS_CTL  ,OS_ALT  ,OS_GUI  ,OS_SFT  ,_______ ,                          _______ ,KC_4    ,KC_5    ,KC_6    ,KC_0    , 
+       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          _______ ,KC_4    ,KC_5    ,KC_6    ,KC_0    , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        XXXXXXX ,_______ ,_______ ,_______ ,XXXXXXX ,                          XXXXXXX ,KC_1    ,KC_2    ,KC_3    ,XXXXXXX , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
@@ -256,8 +256,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     handled      = update_oneshot_layer(&os_func_state, _FUNC, OS_FUNC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_misc_state, _MISC, OS_MISC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_expr_state, _EXPR, OS_EXPR, keycode, record) & handled;
-    handled      = update_oneshot_layer(&os_expr_state, _PROG, OS_PROG, keycode, record) & handled;
-    handled      = update_oneshot_layer(&os_expr_state, _NUM, OS_NUM, keycode, record) & handled;
+    handled      = update_oneshot_layer(&os_prog_state, _PROG, OS_PROG, keycode, record) & handled;
+    handled      = update_oneshot_layer(&os_num_state, _NUM, OS_NUM, keycode, record) & handled;
 
     if (!handled) return false;
 
