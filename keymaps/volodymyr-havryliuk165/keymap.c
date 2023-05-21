@@ -16,7 +16,6 @@ enum layers {
     _MISC,
     // Left hand layers
     _EXPR,
-    _PROG,
     // Both hand layers
     _NUM,
 };
@@ -30,7 +29,6 @@ enum custom_keycodes {
     OS_FUNC,
     OS_MISC,
     OS_EXPR,
-    OS_PROG,
     OS_NUM
 };
 
@@ -42,11 +40,10 @@ enum custom_keycodes {
 #define OS_CTL OSM(MOD_LCTL)
 #define OS_ALT OSM(MOD_LALT)
 #define OS_GUI OSM(MOD_LGUI)
-#define OS_WEZ OSM(MOD_LCTL | MOD_LSFT)
 // **************************************************
 
 // Combos
-enum combos { C_J, C_V, C_X, C_UNDS, C_PERC, C_QUES, C_ALTR, C_LEN };
+enum combos { C_J, C_V, C_X, C_UNDS, C_PERC, C_QUES, C_HASH, C_ALTR, C_LEN };
 uint16_t COMBO_LEN = C_LEN;
 
 const uint16_t PROGMEM combj[]      = {KC_B, KC_Z, COMBO_END};
@@ -54,7 +51,8 @@ const uint16_t PROGMEM combv[]      = {KC_Z, KC_C, COMBO_END};
 const uint16_t PROGMEM combx[]      = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM combaltrep[] = {OS_EXPR, KC_SPC, COMBO_END};
 const uint16_t PROGMEM combunds[]   = {KC_COMM, KC_DOT, COMBO_END};
-const uint16_t PROGMEM combperc[]   = {KC_TILD, KC_CIRC, COMBO_END};
+const uint16_t PROGMEM combperc[]   = {KC_CIRC, KC_DLR, COMBO_END};
+const uint16_t PROGMEM combhash[]   = {KC_TILD, KC_DLR, COMBO_END};
 const uint16_t PROGMEM combques[]   = {KC_EXLM, KC_PIPE, COMBO_END};
 
 combo_t key_combos[] = {
@@ -66,6 +64,7 @@ combo_t key_combos[] = {
     [C_ALTR] = COMBO(combaltrep, ALTREP),
     // Expr layer combos
     [C_PERC] = COMBO(combperc, KC_PERC),
+    [C_HASH] = COMBO(combhash, KC_HASH),
     [C_QUES] = COMBO(combques, KC_QUES)
 };
 // **************************************************
@@ -122,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NAV] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       _______ ,KC_TAB  ,KC_UP   ,KC_ENT  ,_______ ,                          _______ ,_______ ,_______ ,_______ ,OS_WEZ  ,
+       _______ ,KC_TAB  ,KC_UP   ,KC_ENT  ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_ESC  ,KC_LEFT ,KC_DOWN ,KC_RIGHT,_______ ,                          _______ ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
@@ -158,31 +157,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_EXPR] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       OS_WEZ  ,KC_LBRC ,KC_RBRC ,_______ ,_______ ,                          KC_PLUS ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_ASTR ,
+       KC_SLSH ,KC_LCBR ,KC_LBRC ,KC_LPRN ,KC_GRV  ,                          KC_PLUS ,KC_CIRC ,KC_DLR  ,KC_TILD  ,KC_ASTR ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          KC_LT   ,KC_COLN ,KC_EQL  ,KC_MINS ,KC_AMPR , 
+       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,KC_AT   ,                          KC_LT   ,KC_COLN ,KC_EQL  ,KC_MINS ,KC_AMPR , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,_______ ,_______ ,OS_PROG ,XXXXXXX ,                          XXXXXXX ,KC_EXLM ,KC_PIPE ,KC_GT   ,XXXXXXX , 
+       XXXXXXX ,KC_RCBR ,KC_RBRC ,KC_RPRN ,XXXXXXX ,                          XXXXXXX ,KC_EXLM ,KC_PIPE ,KC_GT   ,XXXXXXX , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,_______ ,_______ ,                          _______ ,OS_NUM  ,XXXXXXX
-    //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
-    ),
-
-    [_PROG] = LAYOUT_split_3x5_3(
-    //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       _______ ,_______ ,_______ ,_______ ,_______ ,                          KC_GRV  ,KC_LBRC ,KC_HASH ,KC_RBRC ,KC_DQUO ,
-    //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       _______ ,_______ ,_______ ,_______ ,_______ ,                          KC_AT   ,KC_LPRN ,KC_BSLS ,KC_RPRN ,KC_SCLN , 
-    //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,_______ ,_______ ,_______ ,XXXXXXX ,                          XXXXXXX ,KC_LCBR ,KC_SLSH ,KC_RCBR ,XXXXXXX , 
-    //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,_______ ,_______ ,                          _______ ,_______ ,XXXXXXX
+                         XXXXXXX ,_______ ,_______ ,                          KC_BSLS ,OS_NUM  ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
     [_NUM] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       OS_WEZ  ,_______ ,_______ ,_______ ,_______ ,                          _______ ,KC_7    ,KC_8    ,KC_9    ,_______ ,
+       _______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,KC_7    ,KC_8    ,KC_9    ,_______ ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          _______ ,KC_4    ,KC_5    ,KC_6    ,KC_0    , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
@@ -246,7 +233,6 @@ oneshot_state os_nav_state  = os_up_unqueued;
 oneshot_state os_func_state = os_up_unqueued;
 oneshot_state os_misc_state = os_up_unqueued;
 oneshot_state os_expr_state = os_up_unqueued;
-oneshot_state os_prog_state = os_up_unqueued;
 oneshot_state os_num_state  = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -258,7 +244,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     handled      = update_oneshot_layer(&os_func_state, _FUNC, OS_FUNC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_misc_state, _MISC, OS_MISC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_expr_state, _EXPR, OS_EXPR, keycode, record) & handled;
-    handled      = update_oneshot_layer(&os_prog_state, _PROG, OS_PROG, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_num_state, _NUM, OS_NUM, keycode, record) & handled;
 
     if (!handled) return false;
