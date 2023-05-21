@@ -46,12 +46,13 @@ enum custom_keycodes {
 // **************************************************
 
 // Combos
-enum combos { C_J, C_V, C_X, C_UNDS, C_PERC, C_QUES, C_BSPC, C_LEN };
+enum combos { C_J, C_V, C_X, C_UNDS, C_PERC, C_QUES, C_ALTR, C_LEN };
 uint16_t COMBO_LEN = C_LEN;
 
 const uint16_t PROGMEM combj[]      = {KC_B, KC_Z, COMBO_END};
 const uint16_t PROGMEM combv[]      = {KC_Z, KC_C, COMBO_END};
 const uint16_t PROGMEM combx[]      = {KC_H, KC_COMM, COMBO_END};
+const uint16_t PROGMEM combaltrep[] = {OS_EXPR, KC_SPC, COMBO_END};
 const uint16_t PROGMEM combunds[]   = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM combperc[]   = {KC_TILD, KC_CIRC, COMBO_END};
 const uint16_t PROGMEM combques[]   = {KC_EXLM, KC_PIPE, COMBO_END};
@@ -62,6 +63,7 @@ combo_t key_combos[] = {
     [C_V]    = COMBO(combv, KC_V),
     [C_X]    = COMBO(combx, KC_X),
     [C_UNDS] = COMBO(combunds, KC_UNDS),
+    [C_ALTR] = COMBO(combaltrep, ALTREP),
     // Expr layer combos
     [C_PERC] = COMBO(combperc, KC_PERC),
     [C_QUES] = COMBO(combques, KC_QUES)
@@ -120,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NAV] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       _______ ,KC_TAB  ,KC_UP   ,KC_ENT  ,_______ ,                          _______ ,REPEAT  ,_______ ,ALTREP  ,OS_WEZ  ,
+       _______ ,KC_TAB  ,KC_UP   ,KC_ENT  ,_______ ,                          _______ ,_______ ,_______ ,_______ ,OS_WEZ  ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_ESC  ,KC_LEFT ,KC_DOWN ,KC_RIGHT,_______ ,                          _______ ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
@@ -158,9 +160,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
        OS_WEZ  ,KC_LBRC ,KC_RBRC ,_______ ,_______ ,                          KC_PLUS ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_ASTR ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          KC_AMPR ,KC_COLN ,KC_EQL  ,KC_MINS ,KC_GT   , 
+       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          KC_LT   ,KC_COLN ,KC_EQL  ,KC_MINS ,KC_AMPR , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,_______ ,_______ ,OS_PROG ,XXXXXXX ,                          XXXXXXX ,KC_LT   ,KC_PIPE ,KC_EXLM ,XXXXXXX , 
+       XXXXXXX ,_______ ,_______ ,OS_PROG ,XXXXXXX ,                          XXXXXXX ,KC_EXLM ,KC_PIPE ,KC_GT   ,XXXXXXX , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
                          XXXXXXX ,_______ ,_______ ,                          _______ ,OS_NUM  ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
