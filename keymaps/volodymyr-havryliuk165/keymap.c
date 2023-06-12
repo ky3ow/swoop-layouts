@@ -3,6 +3,7 @@
 // Features
 #include "features/repeat_key.h"
 #include "features/oneshot.h"
+#include "features/custom_shift_keys.h"
 
 enum layers {
     // Base layers
@@ -197,9 +198,8 @@ oneshot_state os_misc_state = os_up_unqueued;
 oneshot_state os_expr_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) {
-        return false;
-    }
+    if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) { return false; }
+    if (!process_custom_shift_keys(keycode, record)) { return false; }
     bool handled = true;
     handled      = update_oneshot_layer(&os_nav_state, _NAV, OS_NAV, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_func_state, _FUNC, OS_FUNC, keycode, record) & handled;
@@ -212,3 +212,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 // **************************************************
+
+const custom_shift_key_t custom_shift_keys[] = {
+  {KC_DOT , KC_UNDS}, // Shift . is _
+  {KC_COMM, KC_SCLN}, // Shift , is ;
+};
+
+uint8_t NUM_CUSTOM_SHIFT_KEYS =
+    sizeof(custom_shift_keys) / sizeof(custom_shift_key_t);
