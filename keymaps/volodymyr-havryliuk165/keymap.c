@@ -3,7 +3,6 @@
 // Features
 #include "features/repeat_key.h"
 #include "features/oneshot.h"
-#include "features/custom_shift_keys.h"
 
 enum layers {
     // Base layers
@@ -55,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_QUES , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          OS_SFT  ,OS_EXPR ,XXXXXXX
+                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          REPEAT  ,OS_EXPR ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -65,9 +64,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_A    ,KC_S    ,KC_R    ,KC_T    ,KC_G    ,                          KC_F    ,KC_N    ,KC_E    ,KC_I    ,KC_O    , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_J    ,KC_Z    ,KC_X    ,KC_C    ,KC_V    ,                          KC_B    ,KC_H    ,REPEAT  ,KC_DOT  ,KC_COMM , 
+       KC_J    ,KC_Z    ,KC_X    ,KC_C    ,KC_V    ,                          KC_B    ,KC_H    ,KC_COMM ,KC_DOT  ,KC_SCLN , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          OS_SFT  ,OS_EXPR ,XXXXXXX
+                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          REPEAT  ,OS_EXPR ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -79,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_QUES , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          OS_SFT  ,OS_EXPR ,XXXXXXX
+                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          REPEAT  ,OS_EXPR ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -133,11 +132,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_EXPR] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       KC_PERC ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_AT   ,                          _______ ,KC_LPRN ,KC_LBRC ,KC_RBRC ,KC_RPRN ,
+       KC_PERC ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_AT   ,                          KC_GRV  ,KC_LPRN ,KC_LBRC ,KC_RBRC ,KC_RPRN ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_ASTR ,KC_MINS ,KC_EQL  ,KC_COLN ,KC_PLUS ,                          KC_HASH ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_LT   ,KC_EXLM ,KC_PIPE ,KC_GT   ,KC_AMPR ,                          _______ ,KC_QUES ,KC_LCBR ,KC_RCBR ,KC_SLSH , 
+       KC_LT   ,KC_EXLM ,KC_PIPE ,KC_GT   ,KC_AMPR ,                          KC_UNDS ,KC_DQUO ,KC_QUES ,_______ ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
                          XXXXXXX ,KC_BSLS ,KC_BSPC ,                          _______ ,_______ ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
@@ -199,7 +198,6 @@ oneshot_state os_expr_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) { return false; }
-    if (!process_custom_shift_keys(keycode, record)) { return false; }
     bool handled = true;
     handled      = update_oneshot_layer(&os_nav_state, _NAV, OS_NAV, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_func_state, _FUNC, OS_FUNC, keycode, record) & handled;
@@ -212,11 +210,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 // **************************************************
-
-const custom_shift_key_t custom_shift_keys[] = {
-  {KC_DOT , KC_UNDS}, // Shift . is _
-  {KC_COMM, KC_SCLN}, // Shift , is ;
-};
-
-uint8_t NUM_CUSTOM_SHIFT_KEYS =
-    sizeof(custom_shift_keys) / sizeof(custom_shift_key_t);
