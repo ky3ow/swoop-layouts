@@ -15,9 +15,7 @@ enum layers {
     _FUNC,
     _MISC,
     // Left hand layers
-    _EXPR,
-    // Both hand layers
-    _NUM,
+    _EXPR
 };
 
 enum custom_keycodes {
@@ -28,8 +26,7 @@ enum custom_keycodes {
     OS_NAV,
     OS_FUNC,
     OS_MISC,
-    OS_EXPR,
-    OS_NUM
+    OS_EXPR
 };
 
 #define DF_SOUL DF(_SOUL)
@@ -40,33 +37,11 @@ enum custom_keycodes {
 #define OS_CTL OSM(MOD_LCTL)
 #define OS_ALT OSM(MOD_LALT)
 #define OS_GUI OSM(MOD_LGUI)
+
 // **************************************************
+combo_t key_combos[] = {};
+uint16_t COMBO_LEN = 0;
 
-// Combos
-enum combos { C_J, C_V, C_X, C_UNDS, C_PERC, C_QUES, C_HASH, C_ALTR, C_LEN };
-uint16_t COMBO_LEN = C_LEN;
-
-const uint16_t PROGMEM combj[]      = {KC_B, KC_Z, COMBO_END};
-const uint16_t PROGMEM combv[]      = {KC_Z, KC_C, COMBO_END};
-const uint16_t PROGMEM combx[]      = {KC_H, KC_COMM, COMBO_END};
-const uint16_t PROGMEM combaltrep[] = {OS_EXPR, KC_SPC, COMBO_END};
-const uint16_t PROGMEM combunds[]   = {KC_COMM, KC_DOT, COMBO_END};
-const uint16_t PROGMEM combperc[]   = {KC_CIRC, KC_DLR, COMBO_END};
-const uint16_t PROGMEM combhash[]   = {KC_TILD, KC_DLR, COMBO_END};
-const uint16_t PROGMEM combques[]   = {KC_EXLM, KC_PIPE, COMBO_END};
-
-combo_t key_combos[] = {
-    // Soul combos
-    [C_J]    = COMBO(combj, KC_J),
-    [C_V]    = COMBO(combv, KC_V),
-    [C_X]    = COMBO(combx, KC_X),
-    [C_UNDS] = COMBO(combunds, KC_UNDS),
-    [C_ALTR] = COMBO(combaltrep, ALTREP),
-    // Expr layer combos
-    [C_PERC] = COMBO(combperc, KC_PERC),
-    [C_HASH] = COMBO(combhash, KC_HASH),
-    [C_QUES] = COMBO(combques, KC_QUES)
-};
 // **************************************************
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -79,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_QUES , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,OS_EXPR ,KC_SPC  ,                          REPEAT  ,OS_NAV  ,XXXXXXX
+                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          OS_SFT  ,OS_EXPR ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -89,9 +64,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_A    ,KC_S    ,KC_R    ,KC_T    ,KC_G    ,                          KC_F    ,KC_N    ,KC_E    ,KC_I    ,KC_O    , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,KC_B    ,KC_Z    ,KC_C    ,XXXXXXX ,                          XXXXXXX ,KC_H    ,KC_COMM ,KC_DOT  ,XXXXXXX , 
+       KC_J    ,KC_Z    ,KC_X    ,KC_C    ,KC_V    ,                          KC_B    ,KC_H    ,REPEAT  ,KC_DOT  ,KC_COMM , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,OS_EXPR ,KC_SPC  ,                          REPEAT  ,OS_NAV  ,XXXXXXX
+                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          OS_SFT  ,OS_EXPR ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -103,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_QUES , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,OS_EXPR ,KC_SPC  ,                          REPEAT  ,OS_NAV  ,XXXXXXX
+                         XXXXXXX ,OS_NAV  ,KC_SPC  ,                          OS_SFT  ,OS_EXPR ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -121,23 +96,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_NAV] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       _______ ,KC_TAB  ,KC_UP   ,KC_ENT  ,_______ ,                          _______ ,KC_SCLN ,_______ ,_______ ,_______ ,
+       KC_1    ,KC_2    ,KC_3    ,KC_4    ,KC_5    ,                          KC_6    ,KC_7    ,KC_8    ,KC_9    ,KC_0    ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_ESC  ,KC_LEFT ,KC_DOWN ,KC_RIGHT,_______ ,                          _______ ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
+       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RIGHT,KC_ESC  , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,_______ ,_______ ,_______ ,XXXXXXX ,                          XXXXXXX ,OS_FUNC ,OS_MISC ,_______ ,XXXXXXX , 
+       _______ ,_______ ,OS_MISC ,OS_FUNC ,_______ ,                          KC_TAB  ,_______ ,_______ ,_______ ,_______ , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,OS_NUM  ,KC_BSPC ,                          _______ ,_______ ,XXXXXXX
+                         XXXXXXX ,_______ ,KC_BSPC ,                          KC_ENT  ,_______ ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
     [_FUNC] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       _______ ,_______ ,KC_PGUP ,KC_INS  ,KC_PSCR ,                          KC_F6   ,KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,
+       KC_F1   ,KC_F2   ,KC_F3   ,KC_F4   ,KC_F5   ,                          KC_F6   ,KC_F7   ,KC_F8   ,KC_F9   ,KC_F10  ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_DEL  ,KC_HOME ,KC_PGDN ,KC_END  ,_______ ,                          KC_F1   ,KC_F2   ,KC_F3   ,KC_F4   ,KC_F5   , 
+       KC_F11  ,_______ ,_______ ,_______ ,KC_PSCR ,                          KC_HOME ,KC_PGDN ,KC_PGUP ,KC_END  ,KC_F12  , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,_______ ,_______ ,_______ ,XXXXXXX ,                          XXXXXXX ,_______ ,KC_F11  ,KC_F12  ,XXXXXXX , 
+       _______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
                          XXXXXXX ,_______ ,_______ ,                          _______ ,_______ ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
@@ -145,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_MISC] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       _______ ,DF_QWER ,DF_SOUL ,DF_UKR  ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ ,
+       _______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,DF_QWER ,DF_SOUL ,DF_UKR  ,_______ ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        _______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,_______ ,_______ ,_______ ,_______ , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
@@ -157,28 +132,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_EXPR] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       KC_SLSH ,KC_LCBR ,KC_LBRC ,KC_LPRN ,KC_GRV  ,                          KC_PLUS ,KC_CIRC ,KC_DLR  ,KC_TILD  ,KC_ASTR ,
+       KC_PERC ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_AT   ,                          _______ ,KC_LPRN ,KC_LBRC ,KC_RBRC ,KC_RPRN ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,KC_AT   ,                          KC_LT   ,KC_COLN ,KC_EQL  ,KC_MINS ,KC_AMPR , 
+       KC_ASTR ,KC_MINS ,KC_EQL  ,KC_COLN ,KC_PLUS ,                          KC_HASH ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,KC_RCBR ,KC_RBRC ,KC_RPRN ,XXXXXXX ,                          XXXXXXX ,KC_EXLM ,KC_PIPE ,KC_GT   ,XXXXXXX , 
+       KC_LT   ,KC_EXLM ,KC_PIPE ,KC_GT   ,KC_AMPR ,                          _______ ,KC_QUES ,KC_LCBR ,KC_RCBR ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,_______ ,_______ ,                          KC_BSLS ,OS_NUM  ,XXXXXXX
-    //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
-    ),
-
-    [_NUM] = LAYOUT_split_3x5_3(
-    //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       _______ ,_______ ,_______ ,_______ ,_______ ,                          _______ ,KC_7    ,KC_8    ,KC_9    ,_______ ,
-    //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          _______ ,KC_4    ,KC_5    ,KC_6    ,KC_0    , 
-    //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       XXXXXXX ,_______ ,_______ ,_______ ,XXXXXXX ,                          XXXXXXX ,KC_1    ,KC_2    ,KC_3    ,XXXXXXX , 
-    //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,_______ ,_______ ,                          _______ ,_______ ,XXXXXXX
+                         XXXXXXX ,KC_BSLS ,KC_BSPC ,                          _______ ,_______ ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     )
-
 };
 
 // Language change //
@@ -233,7 +195,6 @@ oneshot_state os_nav_state  = os_up_unqueued;
 oneshot_state os_func_state = os_up_unqueued;
 oneshot_state os_misc_state = os_up_unqueued;
 oneshot_state os_expr_state = os_up_unqueued;
-oneshot_state os_num_state  = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) {
@@ -244,7 +205,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     handled      = update_oneshot_layer(&os_func_state, _FUNC, OS_FUNC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_misc_state, _MISC, OS_MISC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_expr_state, _EXPR, OS_EXPR, keycode, record) & handled;
-    handled      = update_oneshot_layer(&os_num_state, _NUM, OS_NUM, keycode, record) & handled;
 
     if (!handled) return false;
 
