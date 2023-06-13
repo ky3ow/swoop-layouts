@@ -21,13 +21,12 @@ enum custom_keycodes {
     REPEAT = SAFE_RANGE,
     ALTREP,
     // One shot layers because OSL is broken rn
-   //  OS_SYM,
-    OS_NAV,
     OS_FUNC,
     OS_MISC
 };
 
 #define OS_SYM OSL(_SYM)
+#define OS_NAV OSL(_NAV)
 
 #define DF_QWER DF(_QWERTY)
 #define DF_UKR DF(_UN)
@@ -169,16 +168,12 @@ bool is_oneshot_mod_key(uint16_t keycode) {
     return false;
 }
 
-oneshot_state os_sym_state = os_up_unqueued;
-oneshot_state os_nav_state = os_up_unqueued;
 oneshot_state os_func_state = os_up_unqueued;
 oneshot_state os_misc_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) { return false; }
     bool handled = true;
-   //  handled      = update_oneshot_layer(&os_sym_state, _SYM, OS_SYM, keycode, record) & handled;
-    handled      = update_oneshot_layer(&os_nav_state, _NAV, OS_NAV, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_func_state, _FUNC, OS_FUNC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_misc_state, _MISC, OS_MISC, keycode, record) & handled;
 
