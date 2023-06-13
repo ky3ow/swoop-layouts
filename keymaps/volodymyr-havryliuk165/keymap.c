@@ -21,11 +21,13 @@ enum custom_keycodes {
     REPEAT = SAFE_RANGE,
     ALTREP,
     // One shot layers because OSL is broken rn
-    OS_SYM,
+   //  OS_SYM,
     OS_NAV,
     OS_FUNC,
     OS_MISC
 };
+
+#define OS_SYM OSL(_SYM)
 
 #define DF_QWER DF(_QWERTY)
 #define DF_UKR DF(_UN)
@@ -50,9 +52,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
        KC_Q    ,KC_W    ,KC_E    ,KC_R    ,KC_T    ,                          KC_Y    ,KC_U    ,KC_I    ,KC_O    ,KC_P    ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,                          KC_H    ,KC_J    ,KC_K    ,KC_L    ,REPEAT  , 
+       KC_A    ,KC_S    ,KC_D    ,KC_F    ,KC_G    ,                          KC_H    ,KC_J    ,KC_K    ,KC_L    ,KC_SCLN , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SCLN , 
+       KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,REPEAT  , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
                          XXXXXXX ,OS_NAV  ,CTL_SPC ,                          SFT_BSPC,OS_SYM  ,XXXXXXX 
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
@@ -76,9 +78,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        OS_GUI  ,OS_ALT  ,OS_CTL  ,OS_SFT  ,_______ ,                          KC_LEFT ,KC_DOWN ,KC_UP   ,KC_RIGHT,KC_ESC  , 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       _______ ,_______ ,OS_MISC ,OS_FUNC ,_______ ,                          KC_TAB  ,_______ ,_______ ,_______ ,_______ , 
+       KC_BSLS ,_______ ,OS_MISC ,OS_FUNC ,_______ ,                          KC_HASH ,KC_LBRC ,KC_LPRN ,KC_RPRN ,KC_RBRC , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,_______ ,_______ ,                          KC_ENT  ,_______ ,XXXXXXX
+                         XXXXXXX ,_______ ,_______ ,                          KC_ENT  ,KC_TAB  ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -108,13 +110,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_SYM] = LAYOUT_split_3x5_3(
     //┌────────┬────────┬────────┬────────┬────────┐                         ┌────────┬────────┬────────┬────────┬────────┐
-       KC_PERC ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_AT   ,                          KC_GRV  ,KC_LPRN ,KC_LBRC ,KC_RBRC ,KC_RPRN ,
+       KC_PERC ,KC_TILD ,KC_CIRC ,KC_DLR  ,KC_AT   ,                          _______ ,KC_GRV  ,_______ ,_______ ,_______ ,
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_ASTR ,KC_MINS ,KC_EQL  ,KC_COLN ,KC_PLUS ,                          KC_HASH ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
+       KC_ASTR ,KC_MINS ,KC_EQL  ,KC_COLN ,KC_PLUS ,                          _______ ,OS_SFT  ,OS_CTL  ,OS_ALT  ,OS_GUI, 
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
-       KC_LT   ,KC_EXLM ,KC_PIPE ,KC_GT   ,KC_AMPR ,                          KC_UNDS ,KC_DQUO ,KC_QUES ,_______ ,KC_SLSH , 
+       KC_LT   ,KC_EXLM ,KC_PIPE ,KC_GT   ,KC_AMPR ,                          _______ ,KC_QUES ,KC_SLSH ,KC_UNDS ,KC_BSLS , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┘
-                         XXXXXXX ,KC_BSLS ,_______ ,                          _______ ,_______ ,XXXXXXX
+                         XXXXXXX ,KC_DQUO ,KC_QUOT ,                          _______ ,_______ ,XXXXXXX
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     )
 };
@@ -175,7 +177,7 @@ oneshot_state os_misc_state = os_up_unqueued;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) { return false; }
     bool handled = true;
-    handled      = update_oneshot_layer(&os_sym_state, _SYM, OS_SYM, keycode, record) & handled;
+   //  handled      = update_oneshot_layer(&os_sym_state, _SYM, OS_SYM, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_nav_state, _NAV, OS_NAV, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_func_state, _FUNC, OS_FUNC, keycode, record) & handled;
     handled      = update_oneshot_layer(&os_misc_state, _MISC, OS_MISC, keycode, record) & handled;
