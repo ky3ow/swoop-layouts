@@ -20,9 +20,6 @@ enum layers {
 #define DF_QWER DF(_QWERTY)
 #define DF_UKR DF(_UN)
 // ****
-#define MY_SPC  KC_SPC
-#define MY_BSPC  KC_BSPC
-// ****
 #define OS_SFT OSM(MOD_LSFT)
 #define OS_CTL OSM(MOD_LCTL)
 #define OS_ALT OSM(MOD_LALT)
@@ -54,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼─────────────────┘
-                         QK_AREP ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,QK_REP 
+                         QK_REP  ,OS_NAV  ,KC_SPC  ,                          QK_AREP ,OS_SYM  ,KC_BSPC
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -66,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼─────────────────┘
-                         QK_AREP ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,QK_REP 
+                         QK_REP  ,OS_NAV  ,KC_SPC  ,                          QK_AREP ,OS_SYM  ,KC_BSPC
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -159,6 +156,7 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
     case KC_C: return KC_E;  // For "CE" bigram.
     case KC_L: return KC_O;  // For "LO" bigram.
     case KC_U: return KC_N;  // For "UN" bigram.
+    case KC_M: return KC_U;  // For "MU" bigram.
   }
   return KC_TRNS;
 }
