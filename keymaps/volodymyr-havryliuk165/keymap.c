@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "features/repeat_key.h"
 
 enum layers {
     // Base layers
@@ -19,8 +20,8 @@ enum layers {
 #define DF_QWER DF(_QWERTY)
 #define DF_UKR DF(_UN)
 // ****
-#define MY_SPC  MT(MOD_LCTL, KC_SPC)
-#define MY_BSPC  MT(MOD_LSFT, KC_BSPC)
+#define MY_SPC  KC_SPC
+#define MY_BSPC  KC_BSPC
 // ****
 #define OS_SFT OSM(MOD_LSFT)
 #define OS_CTL OSM(MOD_LCTL)
@@ -28,8 +29,18 @@ enum layers {
 #define OS_GUI OSM(MOD_LGUI)
 
 // **************************************************
-combo_t key_combos[] = {};
-uint16_t COMBO_LEN = 0;
+enum custom_keycodes {
+  REPEAT = SAFE_RANGE,
+  ALTREP
+};
+
+// **************************************************
+const uint16_t PROGMEM test_combo1[] = {OS_NAV, ALTREP, COMBO_END};
+combo_t key_combos[] = {
+    COMBO(test_combo1, OS_FUNC)
+};
+
+uint16_t COMBO_LEN = 1;
 
 // **************************************************
 
@@ -43,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼─────────────────┘
-                         OS_FUNC ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,OS_ALT 
+                         ALTREP  ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,REPEAT 
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -55,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼─────────────────┘
-                         OS_FUNC ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,OS_ALT 
+                         ALTREP  ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,REPEAT 
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -121,8 +132,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     static layer_state_t prev_state    = 0;
     bool                 base_to_sym = layer_state_cmp(prev_state, 0) && layer_state_cmp(state, _SYM);
     bool                 sym_to_base = layer_state_cmp(state, 0) && layer_state_cmp(prev_state, _SYM);
+    bool                 base_to_nav = layer_state_cmp(prev_state, 0) && layer_state_cmp(state, _NAV);
+    bool                 nav_to_base = layer_state_cmp(state, 0) && layer_state_cmp(prev_state, _NAV);
     bool                 is_un         = get_highest_layer(default_layer_state) == _UN;
-    if (is_un && (base_to_sym || sym_to_base)) {
+    if (is_un && (base_to_sym || sym_to_base || base_to_nav || nav_to_base)) {
         CHANGE_LANG;
     }
 
@@ -130,3 +143,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 // **************************************************
+
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+  if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) { return false; }
+
+  return true;
+}
