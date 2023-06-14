@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-#include "features/repeat_key.h"
+// #include "features/repeat_key.h"
 
 enum layers {
     // Base layers
@@ -29,10 +29,10 @@ enum layers {
 #define OS_GUI OSM(MOD_LGUI)
 
 // **************************************************
-enum custom_keycodes {
-  REPEAT = SAFE_RANGE,
-  ALTREP
-};
+// enum custom_keycodes {
+//   QK_REP = SAFE_RANGE,
+//   QK_AREP
+// };
 
 // **************************************************
 const uint16_t PROGMEM test_combo1[] = {OS_NAV, KC_SPC, COMBO_END};
@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼─────────────────┘
-                         ALTREP  ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,REPEAT 
+                         QK_AREP ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,QK_REP 
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼────────┼────────┤
        KC_Z    ,KC_X    ,KC_C    ,KC_V    ,KC_B    ,                          KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH , 
     //└─────────────────┼────────┼────────┼────────┤                         ├────────┼────────┼────────┼─────────────────┘
-                         ALTREP  ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,REPEAT 
+                         QK_AREP ,OS_NAV  ,MY_SPC  ,                          MY_BSPC ,OS_SYM  ,QK_REP 
     //                  └────────┴────────┴────────┘                         └────────┴────────┴────────┘
     ),
 
@@ -163,10 +163,10 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
   return KC_TRNS;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-  if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) { return false; }
+// bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+//   if (!process_repeat_key_with_alt(keycode, record, QK_REP, QK_AREP)) { return false; }
 
-  return true;
-}
+//   return true;
+// }
 
 // **************************************************
