@@ -35,7 +35,7 @@ enum custom_keycodes {
 };
 
 // **************************************************
-const uint16_t PROGMEM test_combo1[] = {OS_NAV, ALTREP, COMBO_END};
+const uint16_t PROGMEM test_combo1[] = {OS_NAV, KC_SPC, COMBO_END};
 combo_t key_combos[] = {
     COMBO(test_combo1, OS_FUNC)
 };
@@ -144,8 +144,29 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 // **************************************************
 
+// Repeat //
+
+uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
+  if((mods & MOD_MASK_CTRL)) {
+   switch(keycode) {
+      case KC_D: return C(KC_U);
+      case KC_U: return C(KC_D);
+   }
+  }
+  switch (keycode) {
+    case KC_E: return KC_D;  // For "ED" bigram.
+    case KC_D: return KC_E;  // For "DE" bigram.
+    case KC_C: return KC_E;  // For "CE" bigram.
+    case KC_L: return KC_O;  // For "LO" bigram.
+    case KC_U: return KC_N;  // For "UN" bigram.
+  }
+  return KC_TRNS;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   if (!process_repeat_key_with_alt(keycode, record, REPEAT, ALTREP)) { return false; }
 
   return true;
 }
+
+// **************************************************
