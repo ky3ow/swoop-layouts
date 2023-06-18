@@ -26,10 +26,9 @@ enum layers {
 #define OS_GUI OSM(MOD_LGUI)
 
 // **************************************************
-// enum custom_keycodes {
-//   QK_REP = SAFE_RANGE,
-//   QK_AREP
-// };
+enum custom_keycodes {
+   M_UPDIR = SAFE_RANGE,
+};
 
 // **************************************************
 const uint16_t PROGMEM test_combo1[] = {OS_NAV, KC_SPC, COMBO_END};
@@ -148,23 +147,39 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
    switch(keycode) {
       case KC_D: return C(KC_U);
       case KC_U: return C(KC_D);
+      case KC_F: return C(KC_B);
+      case KC_B: return C(KC_F);
    }
   }
   switch (keycode) {
-    case KC_E: return KC_D;  // For "ED" bigram.
-    case KC_D: return KC_E;  // For "DE" bigram.
-    case KC_C: return KC_E;  // For "CE" bigram.
-    case KC_L: return KC_O;  // For "LO" bigram.
-    case KC_U: return KC_N;  // For "UN" bigram.
-    case KC_M: return KC_U;  // For "MU" bigram.
+    case KC_E: return KC_D;
+    case KC_D: return KC_E;
+    case KC_C: return KC_E;
+    case KC_L: return KC_O;
+    case KC_O: return KC_L;
+    case KC_U: return KC_M;
+    case KC_M: return KC_U;
+    case KC_N: return KC_Y;
+    case KC_H: return KC_Y;
+    case KC_Y: return KC_N;
+    case KC_J: return KC_U;
+    case KC_K: return KC_I;
+    case KC_I: return KC_K;
+    case KC_B: return KC_G;
+    case KC_S: return KC_W;
+    case KC_X: return KC_S;
+    case KC_DOT: return M_UPDIR;
   }
   return KC_TRNS;
 }
 
-// bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-//   if (!process_repeat_key_with_alt(keycode, record, QK_REP, QK_AREP)) { return false; }
-
-//   return true;
-// }
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+  switch (keycode) {
+    case M_UPDIR:
+      SEND_STRING(/*.*/ "./");
+      break;
+  }
+  return true;
+}
 
 // **************************************************
